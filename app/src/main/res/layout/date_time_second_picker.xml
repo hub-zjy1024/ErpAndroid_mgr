@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="年-月-日"
+        android:textColor="#FFFFFF"
+        android:background="@color/title_background"
+        android:textSize="18sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <kankan.wheel.widget.WheelView
+            android:id="@+id/ww_year"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <kankan.wheel.widget.WheelView
+            android:id="@+id/ww_month"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <kankan.wheel.widget.WheelView
+            android:id="@+id/ww_day"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="时-分-秒"
+        android:textColor="@color/color_white"
+        android:background="@color/title_background"
+        android:textSize="18sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <kankan.wheel.widget.WheelView
+            android:id="@+id/ww_hour"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <kankan.wheel.widget.WheelView
+            android:id="@+id/ww_minute"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <kankan.wheel.widget.WheelView
+            android:id="@+id/ww_second"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/date_time_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="确认"/>
+
+        <Button
+            android:id="@+id/date_time_cancle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="取消"/>
+    </LinearLayout>
+</LinearLayout>
