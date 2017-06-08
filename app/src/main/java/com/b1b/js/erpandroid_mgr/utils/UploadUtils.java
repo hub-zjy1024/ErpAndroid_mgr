@@ -1,5 +1,8 @@
 package com.b1b.js.erpandroid_mgr.utils;
 
+import org.apache.commons.net.ftp.FTPClient;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,5 +41,19 @@ public class UploadUtils {
         builder.append(".");
         builder.append(extension);
         return builder.toString();
+    }
+    public static void createDirs(FTPClient ftpClient, String remoteUpLoadPath) throws IOException {
+
+        //根据路径逐层判断目录是否存在，如果不存在则创建
+        //1.首先进入ftp的根目录
+        ftpClient.changeWorkingDirectory("/");
+        String[] dirs = remoteUpLoadPath.split("/");
+        for (String dir : dirs) {
+            //2.创建并进入不存在的目录
+            if (!ftpClient.changeWorkingDirectory(dir)) {
+                ftpClient.mkd(dir);
+                ftpClient.changeWorkingDirectory(dir);
+            }
+        }
     }
 }

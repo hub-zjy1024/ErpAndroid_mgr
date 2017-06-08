@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.b1b.js.erpandroid_mgr.adapter.TableAdapter;
 import com.b1b.js.erpandroid_mgr.entity.KucunFBInfo;
 import com.b1b.js.erpandroid_mgr.utils.MyToast;
+import com.b1b.js.erpandroid_mgr.utils.SoftKeyboardUtils;
 import com.b1b.js.erpandroid_mgr.utils.WebserviceUtils;
 
 import org.json.JSONArray;
@@ -59,6 +60,8 @@ public class KucunFBActivity extends AppCompatActivity {
     TableAdapter tableAdapter;
     private String currentIp = "";
     AlertDialog temDialog;
+    private EditText edPart;
+    private final Object lock = new Object();
     private ProgressDialog pdDialog;
     private Handler zHandler = new Handler() {
         @Override
@@ -68,15 +71,23 @@ public class KucunFBActivity extends AppCompatActivity {
                 case SUCCESS_SEARCH:
                     if (data.size() > 0) {
                         tableAdapter.notifyDataSetChanged();
+                        SoftKeyboardUtils.closeInputMethod(edPart, KucunFBActivity.this);
                     }
-                    if(pdDialog!=null)
-                    pdDialog.cancel();
+                    if (pdDialog != null && pdDialog.isShowing()) {
+                        pdDialog.cancel();
+                    }
                     break;
                 case ERROR_NET:
                     MyToast.showToast(KucunFBActivity.this, "连接服务器失败，请检查网络");
+                    if (pdDialog != null && pdDialog.isShowing()) {
+                        pdDialog.cancel();
+                    }
                     break;
                 case ERROR_OPTION:
                     MyToast.showToast(KucunFBActivity.this, "查询条件有误，请更改");
+                    if (pdDialog != null && pdDialog.isShowing()) {
+                        pdDialog.cancel();
+                    }
                     break;
                 case SUCCESS_PRICE:
                     AlertDialog.Builder builder = new AlertDialog.Builder(KucunFBActivity.this);
@@ -141,7 +152,7 @@ public class KucunFBActivity extends AppCompatActivity {
         pdDialog.setTitle("提示");
         pdDialog.setMessage("正在查询。。");
         Button btnSearch = (Button) findViewById(R.id.kucunfb_btn_search);
-        final EditText edPart = (EditText) findViewById(R.id.kucunfb_ed_partno);
+        edPart = (EditText) findViewById(R.id.kucunfb_ed_partno);
         final EditText edCouts = (EditText) findViewById(R.id.kucunfb_ed_1);
         tableAdapter = new TableAdapter(this, data);
         lv.setAdapter(tableAdapter);
@@ -229,7 +240,6 @@ public class KucunFBActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         super.run();
-
                         String ip = currentIp;
                         String dogSN = CaigoudanEditActivity.getPhoneCode(KucunFBActivity.this);
                         try {

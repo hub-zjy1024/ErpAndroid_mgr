@@ -18,8 +18,14 @@
         <item name="android:windowActionModeOverlay">true</item>
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowActionBar">false</item>
+        <item name="android:buttonStyle">@style/zjy_button_light</item>
 
-
+    </style>
+    <style name="zjy_button_light" parent="Base.Widget.AppCompat.Button">
+        <item name="android:background">@drawable/bg_light_button</item>
+        <item name="android:textColor">@color/button_light_content</item>
+        <item name="android:minHeight">35dp</item>
+        <item name="android:minWidth">60dp</item>
     </style>
     <!--<style name="zjy_theme_stautebar" parent="Theme.">-->
     <!--<item name="android:windowActionModeOverlay">true</item>-->

@@ -72,6 +72,10 @@ public class MenuActivity extends AppCompatActivity {
                         intent.setClass(MenuActivity.this, KucunFBActivity.class);
                         startActivity(intent);
                         break;
+                    case "供应商管理":
+                        intent.setClass(MenuActivity.this, ProviderManagerActivity.class);
+                        startActivity(intent);
+                        break;
                     case "取消自动登录":
                         SharedPreferences sp = getSharedPreferences("UserInfo", 0);
                         boolean atuoLogin = sp.getBoolean("autol", false);
@@ -98,6 +102,9 @@ public class MenuActivity extends AppCompatActivity {
     private void addItem() {
         Map<String, Object> map = new HashMap<>();
         map.put("title", "库存发布");
+        listItems.add(map);
+        map = new HashMap<>();
+        map.put("title", "供应商管理");
         listItems.add(map);
         map = new HashMap<>();
         map.put("title", "取消自动登录");

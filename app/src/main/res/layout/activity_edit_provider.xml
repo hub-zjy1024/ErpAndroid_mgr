@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_edit_provider"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    tools:context="com.b1b.js.erpandroid_mgr.EditProvider">
+
+    <TextView
+        style="@style/zjy_title"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="供应商编辑"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="供应商名称:"/>
+
+            <TextView
+                android:id="@+id/activity_edit_provider_ed_providerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textColor="@color/color_black"
+                android:textSize="18sp"
+                />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:id="@+id/activity_edit_provider_tv_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="类别:"/>
+
+            <RadioGroup
+                android:id="@+id/activity_edit_provider_rg_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/activity_edit_provider_tv_type"
+                android:layout_toRightOf="@id/activity_edit_provider_tv_type"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/activity_edit_provider_rb_brand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="品牌"/>
+
+                <RadioButton
+                    android:id="@+id/activity_edit_provider_rb_partNO"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="型号"/>
+
+            </RadioGroup>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="特色产品:"/>
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/activity_edit_provider_ed_content"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+
+                app:met_clearButton="true"
+                app:met_primaryColor="@color/colorPrimary"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="备注:"/>
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/activity_edit_provider_ed_notes"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                app:met_clearButton="true"
+                app:met_primaryColor="@color/colorPrimary"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/activity_edit_provider_commit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="提交"/>
+
+            <Button
+                android:id="@+id/activity_edit_provider_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:text="返回"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

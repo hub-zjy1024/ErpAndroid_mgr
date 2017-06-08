@@ -73,7 +73,8 @@
             android:layout_height="35dp"
             android:layout_weight="1"
             android:background="@drawable/btn_click"
-            android:text="点我登录"/>
+            android:text="点我登录"
+            android:textColor="@color/color_black"/>
 
         <Button
             android:id="@+id/login_scancode"

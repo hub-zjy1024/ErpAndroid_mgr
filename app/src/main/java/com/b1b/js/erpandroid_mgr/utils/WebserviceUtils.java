@@ -154,6 +154,19 @@ public class WebserviceUtils {
         SoapPrimitive sob = (SoapPrimitive) envelope.getResponse();
         return sob;
     }
+    public static SoapPrimitive getSoapPrimitiveResponse(SoapObject request, String serviceName) throws IOException, XmlPullParserException {
+        SoapSerializationEnvelope envelope = getEnvelope(request, SoapEnvelope.VER11,
+                serviceName, 30 * 1000);
+        SoapPrimitive sob = (SoapPrimitive) envelope.getResponse();
+        return sob;
+    }
+
+    public static SoapPrimitive getSoapPrimitiveResponse(LinkedHashMap<String, Object>
+                                                                 params, String methodName,String
+            serviceName) throws IOException, XmlPullParserException {
+        SoapObject request = getRequest(params, methodName);
+        return   getSoapPrimitiveResponse(request, serviceName);
+    }
 
     private static SoapSerializationEnvelope getEnvelope(String namespace, String method, String soapAction, String transUrl, LinkedHashMap<String, Object> properties, int envolopeVersion, int timeout) throws IOException, XmlPullParserException {
         SoapObject request = new SoapObject(namespace, method);

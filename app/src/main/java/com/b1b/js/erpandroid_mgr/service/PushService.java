@@ -122,9 +122,11 @@ public class PushService extends Service {
     }
 
     private void notifyMessage(String id) {
-        if (id.equals("101") || id.equals("1415 ") || id.equals("3548")) {
-            if (!mWorker.isAlive()) {
-                mWorker.start();
+        if (id != null) {
+            if (id.equals("101") || id.equals("1415 ") || id.equals("3548")) {
+                if (!mWorker.isAlive()) {
+                    mWorker.start();
+                }
             }
         }
     }

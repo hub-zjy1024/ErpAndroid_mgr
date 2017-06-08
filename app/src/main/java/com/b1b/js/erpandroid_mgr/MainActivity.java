@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -122,7 +121,8 @@ public class MainActivity extends AppCompatActivity {
                         JSONArray main = object1.getJSONArray("表");
                         JSONObject obj = main.getJSONObject(0);
                         String url = obj.getString("PhotoFtpIP");
-                        Log.e("zjy", "MainActivity.java->handleMessage(): ftpUrl==" + url);
+                        Log.e("zjy", "MainActivity.java->handleMessage(): ftpUrl==" +
+                                url);
                         String uid = obj.getString("UserID");
                         MyApp.id = uid;
                         String defUid = sp.getString("name", "");
@@ -143,10 +143,12 @@ public class MainActivity extends AppCompatActivity {
                                 for (int i = 0; i < urls.length; i++) {
                                     if (urls[i].equals(localUrl)) {
                                         MyApp.ftpUrl = localUrl;
-                                        if (scanDialog != null && scanDialog.isShowing()) {
+                                        if (scanDialog != null && scanDialog.isShowing
+                                                ()) {
                                             scanDialog.cancel();
                                         }
-                                        Intent intentScan = new Intent(MainActivity.this, MenuActivity.class);
+                                        Intent intentScan = new Intent(MainActivity
+                                                .this, MenuActivity.class);
                                         startActivity(intentScan);
                                         finish();
                                         break;
@@ -169,7 +171,8 @@ public class MainActivity extends AppCompatActivity {
                 //获取ftp地址
                 case FTPCONNECTION_ERROR:
                     //连接ftp失败
-                    MyToast.showToast(MainActivity.this, "连接不到ftp服务器:" + msg.obj.toString() + ",扫码登录失败");
+                    MyToast.showToast(MainActivity.this, "连接不到ftp服务器:" + msg.obj
+                            .toString() + ",扫码登录失败");
                     if (scanDialog != null && scanDialog.isShowing()) {
                         scanDialog.cancel();
                     }
@@ -195,20 +198,26 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case 7:
-                    //                    startUpdate();
-                    //                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    startUpdate();
+                    //                    AlertDialog.Builder builder = new AlertDialog
+                    // .Builder(MainActivity.this);
                     //                    builder.setTypeID("提示");
-                    //                    builder.setMessage("当前有新版本可用，是否更新?\n更新内容：\n" + updateLog);
+                    //                    builder.setMessage("当前有新版本可用，是否更新?\n更新内容：\n"
+                    // + updateLog);
                     //                    builder.setCancelable(false);
-                    //                    builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    //                    builder.setPositiveButton("是", new
+                    // DialogInterface.OnClickListener() {
                     //                        @Override
-                    //                        public void onClick(DialogInterface dialog, int which) {
+                    //                        public void onClick(DialogInterface
+                    // dialog, int which) {
                     //                            startUpdate();
                     //                        }
                     //                    });
-                    //                    builder.setNegativeButton("否", new DialogInterface.OnClickListener() {
+                    //                    builder.setNegativeButton("否", new
+                    // DialogInterface.OnClickListener() {
                     //                        @Override
-                    //                        public void onClick(DialogInterface dialog, int which) {
+                    //                        public void onClick(DialogInterface
+                    // dialog, int which) {
                     //
                     //                        }
                     //                    });
@@ -248,6 +257,9 @@ public class MainActivity extends AppCompatActivity {
         sp = getSharedPreferences("UserInfo", 0);
         final String phoneCode = CaigoudanEditActivity.getPhoneCode(MainActivity.this);
         Log.e("zjy", "MainActivity.java->onCreate(): phoneInfo==" + phoneCode);
+        if (MyApp.myLogger != null) {
+            MyApp.myLogger.writeInfo("phonecode:" + phoneCode);
+        }
         //检查更新
         checkUpdate();
         readCache();
@@ -268,40 +280,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
             }
         });
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 100 && permissions.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            Log.e("zjy", "MenuActivity.java->onRequestPermissionsResult(): ok==");
-        } else {
-            if (permissionDialog == null) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("建议");
-                builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent();
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-                        intent.setData(Uri.fromParts("package", getPackageName(), null));
-                        MainActivity.this.startActivity(intent);
-                    }
-                });
-                builder.setNegativeButton("否", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-                builder.setMessage("缺少相机权限，是否跳转到权限管理页面开启权限");
-                permissionDialog = builder.create();
-                permissionDialog.show();
-            } else {
-                permissionDialog.show();
-            }
-        }
     }
 
     private void startUpdate() {
@@ -337,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         Socket socket = new Socket();
                         SocketAddress remoteAddr = new InetSocketAddress(urls[i], 21);
-                        socket.connect(remoteAddr, 2 * 1000);
+                        socket.connect(remoteAddr, 10 * 1000);
                         MyApp.ftpUrl = urls[i];
                         sp.edit().putString("ftp", MyApp.ftpUrl).apply();
                         handler.sendEmptyMessage(6);
@@ -357,26 +335,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkUpdate() {
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    PackageManager pm = getPackageManager();
-                    PackageInfo info = pm.getPackageInfo(getPackageName(), PackageManager.GET_ACTIVITIES);
-                    Message msg = handler.obtainMessage(9);
-                    msg.obj = info.versionName;
-                    handler.sendMessage(msg);
-                    boolean ifUpdate = checkVersion(info.versionCode);
-                    if (ifUpdate) {
-                        handler.sendEmptyMessage(7);
+        PackageManager pm = getPackageManager();
+        PackageInfo info = null;
+        try {
+            info = pm.getPackageInfo(getPackageName(), PackageManager.GET_ACTIVITIES);
+            final int code = info.versionCode;
+            tvVersion.setText("当前版本为：" + info.versionName);
+            MyApp.myLogger.writeInfo("version:" + code);
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        boolean ifUpdate = checkVersion(code);
+                        if (ifUpdate) {
+                            handler.sendEmptyMessage(7);
+                            //                            startUpdate();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
                 }
-            }
-        }.start();
+            }.start();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private void getUserInfoDetail(final String uid) {
@@ -387,8 +369,10 @@ public class MainActivity extends AppCompatActivity {
                 while (!success) {
                     try {
                         Map<String, Object> result = getUserInfo(uid);
-                        sp.edit().putInt("cid", (int) result.get("cid")).putInt("did", (int) result.get("did")).
-                                putString("oprName", (String) result.get("oprName")).apply();
+                        sp.edit().putInt("cid", (int) result.get("cid")).putInt("did",
+                                (int) result.get("did")).
+                                putString("oprName", (String) result.get("oprName"))
+                                .apply();
                         success = true;
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -410,13 +394,16 @@ public class MainActivity extends AppCompatActivity {
         }.start();
     }
 
-    private Map<String, Object> getUserInfo(String uid) throws IOException, XmlPullParserException, JSONException {
+    private Map<String, Object> getUserInfo(String uid) throws IOException,
+            XmlPullParserException, JSONException {
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         map.put("checker", "1");
         map.put("uid", uid);
         SoapObject request = WebserviceUtils.getRequest(map, "GetUserInfoByUID");
-        SoapPrimitive response = WebserviceUtils.getSoapPrimitiveResponse(request, SoapEnvelope.VER11, WebserviceUtils.Login);
-        Log.e("zjy", "MainActivity.java->run(): info==" + MyApp.id + "\t" + response.toString());
+        SoapPrimitive response = WebserviceUtils.getSoapPrimitiveResponse(request,
+                SoapEnvelope.VER11, WebserviceUtils.Login);
+        Log.e("zjy", "MainActivity.java->run(): info==" + MyApp.id + "\t" + response
+                .toString());
         JSONObject object = new JSONObject(response.toString());
         JSONArray jarr = object.getJSONArray("表");
         JSONObject info = jarr.getJSONObject(0);
@@ -457,8 +444,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     读取条码信息
-     @param data onActivtyResult()回调的data
+     * 读取条码信息
+     *
+     * @param data onActivtyResult()回调的data
      */
     private void readCode(final Intent data) {
         new Thread() {
@@ -471,7 +459,8 @@ public class MainActivity extends AppCompatActivity {
                     map.put("code", code);
                     SoapObject object = WebserviceUtils.getRequest(map, "BarCodeLogin");
                     try {
-                        SoapPrimitive response = WebserviceUtils.getSoapPrimitiveResponse(object, SoapEnvelope.VER11,
+                        SoapPrimitive response = WebserviceUtils
+                                .getSoapPrimitiveResponse(object, SoapEnvelope.VER11,
                                 WebserviceUtils.MartService);
                         Message msg = handler.obtainMessage(SCANCODE_LOGIN_SUCCESS);
                         msg.obj = response.toString();
@@ -502,7 +491,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     登录
+     * 登录
      */
     private void login(final String name, final String pwd) {
         if (pd == null) {
@@ -522,16 +511,19 @@ public class MainActivity extends AppCompatActivity {
                 PackageManager pm = getPackageManager();
                 String version = "";
                 try {
-                    PackageInfo info = pm.getPackageInfo(getPackageName(), PackageManager.GET_ACTIVITIES);
+                    PackageInfo info = pm.getPackageInfo(getPackageName(),
+                            PackageManager.GET_ACTIVITIES);
                     version = info.versionName;
                     map.put("checkWord", "sdr454fgtre6e655t5rt4");
                     map.put("userID", name);
                     map.put("passWord", pwd);
-                    map.put("DeviceID", WebserviceUtils.DeviceID + "," + WebserviceUtils.DeviceNo);
+                    map.put("DeviceID", WebserviceUtils.DeviceID + "," +
+                            WebserviceUtils.DeviceNo);
                     map.put("version", version);
                     SoapPrimitive result = null;
                     SoapObject loginReq = WebserviceUtils.getRequest(map, "AndroidLogin");
-                    result = WebserviceUtils.getSoapPrimitiveResponse(loginReq, SoapEnvelope.VER11, WebserviceUtils.MartService);
+                    result = WebserviceUtils.getSoapPrimitiveResponse(loginReq,
+                            SoapEnvelope.VER11, WebserviceUtils.MartService);
                     String[] resArray = result.toString().split("-");
                     if (resArray[0].equals("SUCCESS")) {
                         Message msg1 = handler.obtainMessage();
@@ -563,18 +555,21 @@ public class MainActivity extends AppCompatActivity {
     private void getMyPhoneNumber() {
         try {
             PackageManager pm = getPackageManager();
-            PackageInfo info = pm.getPackageInfo(getPackageName(), PackageManager.GET_ACTIVITIES);
-            Log.e("zjy", "MainActivity.java->getMyPhoneNumber(): versionCode==" + info.versionCode);
+            PackageInfo info = pm.getPackageInfo(getPackageName(), PackageManager
+                    .GET_ACTIVITIES);
+            Log.e("zjy", "MainActivity.java->getMyPhoneNumber(): versionCode==" + info
+                    .versionCode);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     /**
-     @param localVersion 当前应用的版本号
-     @return
-     @throws SocketTimeoutException
-     @throws IOException             */
+     * @param localVersion 当前应用的版本号
+     * @return
+     * @throws SocketTimeoutException
+     * @throws IOException
+     */
     public boolean checkVersion(int localVersion) throws IOException {
         boolean ifUpdate = false;
         String url = "http://172.16.6.160:8006/DownLoad/dyj_mgr_readme.txt";
@@ -597,7 +592,7 @@ public class MainActivity extends AppCompatActivity {
                     if (Integer.parseInt(info[1]) > localVersion) {
                         ifUpdate = true;
                     }
-                    updateLog = info[2];
+                    updateLog = info[3] + "\n" + info[2];
                     Message msg = handler.obtainMessage(12);
                     msg.sendToTarget();
                 } catch (NumberFormatException e) {
@@ -605,13 +600,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             is.close();
-            Log.e("zjy", "MainActivity.java->checkVersion(): readme==" + stringBuilder.toString());
+            Log.e("zjy", "MainActivity.java->checkVersion(): readme==" + stringBuilder
+                    .toString());
         }
         return ifUpdate;
     }
 
     public void update(Context context, Handler mHandler) throws IOException {
-        //        String url = "http://192.168.10.127:8080/AppUpdate/DownLoad/dyjkfapp.apk";
+        //        String url = "http://192.168.10.127:8080/AppUpdate/DownLoad/dyjkfapp
+        // .apk";
         String downUrl = "http://172.16.6.160:8006/DownLoad/dyj_mgr.apk";
         URL url = new URL(downUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -623,7 +620,8 @@ public class MainActivity extends AppCompatActivity {
             File targetDir;
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                 targetDir = Environment.getExternalStorageDirectory();
-                Log.e("zjy", "MainActivity.java->update(): sd card==" + targetDir.getAbsolutePath());
+                Log.e("zjy", "MainActivity.java->update(): sd card==" + targetDir
+                        .getAbsolutePath());
             } else {
                 targetDir = new File("/storage/sdcard0/dyjdown/");
             }
@@ -656,7 +654,8 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             File file = new File(targetDir, "dyjkfapp.apk");
             if (file.exists()) {
-                intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+                intent.setDataAndType(Uri.fromFile(file), "application/vnd.android" +
+                        ".package-archive");
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             } else {

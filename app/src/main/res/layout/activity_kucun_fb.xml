@@ -30,9 +30,16 @@
             android:id="@+id/kucunfb_ed_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:hint="金额不低于"
             android:inputType="number"/>
 
+        <Button
+            android:id="@+id/kucunfb_btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="搜索"/>
 
     </LinearLayout>
 
@@ -62,26 +69,12 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp">
-
-        <Button
-            android:id="@+id/kucunfb_btn_search"
-            style="@style/myButton"
-            android:text="搜索"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:text="注：长按表内容可查看详情"
-            android:textColor="@color/color_black"/>
-
-
-    </LinearLayout>
-
+        android:layout_marginLeft="5dp"
+        android:text="注：长按表内容可查看详情"
+        android:textColor="@color/color_black"/>
 
     <HorizontalScrollView
         android:id="@+id/kucunfb_scrollview"
